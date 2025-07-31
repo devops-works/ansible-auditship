@@ -1,7 +1,6 @@
----
 name: CI
 
-on:
+'on':
   push:
     branches: [main, master]
   pull_request:
@@ -62,7 +61,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install ansible molecule molecule-plugins[podman]
-          
+
       - name: Install Podman
         run: |
           sudo apt-get update

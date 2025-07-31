@@ -1,21 +1,19 @@
----
-
 dependencies: []
 
 galaxy_info:
   author: DevopsWorks
-  company: DevopsWorks 
+  company: DevopsWorks
   description: ansible-auditship role (https://gitlab.com/devopsworks/tools/auditship)
   license: MIT
   min_ansible_version: "2.4"
   role_name: auditship
   namespace: devopsworks
   platforms:
-  - name: Ubuntu
-    versions:
-    - all
-  - name: Debian
-    versions:
-    - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
   galaxy_tags:
-  - system
+    - system
