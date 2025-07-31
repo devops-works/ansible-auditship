@@ -1,0 +1,20 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Install audit daemon
+      ansible.builtin.package:
+        name: auditd
+        state: present
+        update_cache: true
+
+    - name: Ensure audit plugins directory exists
+      ansible.builtin.file:
+        path: /etc/audit/plugins.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'

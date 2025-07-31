@@ -1,0 +1,8 @@
+active = yes
+direction = out
+path = /usr/local/bin/auditship
+# use one of the following lines to set the output
+args = -out {{ auditship_fluent_url | default("fluent://127.0.0.1:24224") }}
+# args = -out /var/log/auditship.json
+type = always
+format = string

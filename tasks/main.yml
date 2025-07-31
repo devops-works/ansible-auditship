@@ -1,0 +1,16 @@
+---
+- name: Checks if auditship is already present
+  ansible.builtin.stat:
+    path: /usr/local/bin/auditship
+  register: __auditship
+  tags:
+    - always
+
+- include_tasks:
+    file: auditship.yml
+    apply:
+      tags:
+        - auditship
+  when: __auditship is defined and (not __auditship.stat.exists or auditship_force_install)
+  tags:
+    - always

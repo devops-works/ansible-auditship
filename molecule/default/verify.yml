@@ -1,0 +1,53 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Check if auditship binary exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/auditship
+      register: auditship_binary
+      failed_when: not auditship_binary.stat.exists
+
+    - name: Verify auditship binary is executable
+      ansible.builtin.stat:
+        path: /usr/local/bin/auditship
+      register: auditship_perms
+      failed_when: not auditship_perms.stat.executable
+
+    - name: Check auditship plugin configuration exists
+      ansible.builtin.stat:
+        path: /etc/audit/plugins.d/auditship.conf
+      register: auditship_config
+      failed_when: not auditship_config.stat.exists
+
+    - name: Verify auditship plugin configuration content
+      ansible.builtin.slurp:
+        src: /etc/audit/plugins.d/auditship.conf
+      register: config_content
+
+    - name: Validate plugin configuration contains expected values
+      ansible.builtin.assert:
+        that:
+          - "'active = yes' in config_decoded"
+          - "'direction = out' in config_decoded"
+          - "'path = /usr/local/bin/auditship' in config_decoded"
+          - "'fluent://127.0.0.1:24224' in config_decoded"
+          - "'type = always' in config_decoded"
+        fail_msg: "Auditship plugin configuration is missing required values"
+      vars:
+        config_decoded: "{{ config_content.content | b64decode }}"
+
+    - name: Check logrotate configuration exists
+      ansible.builtin.stat:
+        path: /etc/logrotate.d/auditship
+      register: logrotate_config
+      failed_when: not logrotate_config.stat.exists
+
+    - name: Test auditship binary can run (version check)
+      ansible.builtin.command: /usr/local/bin/auditship -version
+      register: version_output
+      changed_when: false
+      failed_when: version_output.rc != 0

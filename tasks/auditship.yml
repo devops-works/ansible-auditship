@@ -1,0 +1,38 @@
+---
+- name: Finds latest auditship version
+  ansible.builtin.uri:
+    url: https://gitlab.com/api/v4/projects/71363433/releases
+    status_code:
+      - 200
+  register: __auditship_repo_info
+  check_mode: no
+
+- ansible.builtin.set_fact:
+    __auditship_latest_version: '{{ __auditship_repo_info.json.0["name"] }}'
+    __auditship_latest_num_version: '{{ __auditship_repo_info.json.0["name"] | regex_replace("v","") }}'
+
+- name: Fetches latest version
+  ansible.builtin.get_url:
+    url: https://gitlab.com/api/v4/projects/71363433/packages/generic/auditship/{{ __auditship_latest_num_version }}/auditship-linux-amd64-{{ __auditship_latest_version }}.gz
+    dest: /tmp/auditship.gz
+
+- name: Fetch & unarchive auditship
+  # can not use unachive, does not support gz
+  ansible.builtin.shell: gunzip -cd /tmp/auditship.gz > /usr/local/bin/auditship && chmod 755 /usr/local/bin/auditship
+
+- name: Add auditd plugin config
+  ansible.builtin.template:
+    # https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.plugin.conf?ref_type=heads
+    src: auditship.plugin.conf.j2
+    dest: /etc/audit/plugins.d/auditship.conf
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Add logrotate config
+  ansible.builtin.get_url:
+    url: https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.logrotate.conf?ref_type=heads
+    dest: /etc/logrotate.d/auditship
+    owner: root
+    group: root
+    mode: 0644

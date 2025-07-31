@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars:
+    auditship_fluent_url: "fluent://127.0.0.1:24224"
+    auditship_force_install: true
+
+  roles:
+    - role: devopsworks.auditship
