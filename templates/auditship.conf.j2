@@ -1,5 +1,5 @@
-tag: auditd
+tag: {{ auditship_tag }}
 outputs:
-  - "-"
-  - "/var/log/auditship.json"
-  - "fluent://localhost:24224"
+{% for output in auditship_outputs %}
+  - "{{ output }}"
+{% endfor %}

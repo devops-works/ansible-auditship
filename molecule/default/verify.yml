@@ -59,10 +59,10 @@
     - name: Validate main configuration contains expected values
       ansible.builtin.assert:
         that:
-          - "'tag: auditd' in main_config_decoded"
+          - "'tag: {{ auditship_tag | default('auditd') }}' in main_config_decoded"
           - "'outputs:' in main_config_decoded"
-          - "'fluent://localhost:24224' in main_config_decoded"
           - "'/var/log/auditship.json' in main_config_decoded"
+          - "'\"-\"' in main_config_decoded"
         fail_msg: "Auditship main configuration is missing required values"
       vars:
         main_config_decoded: "{{ main_config_content.content | b64decode }}"
