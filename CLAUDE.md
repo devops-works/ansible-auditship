@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is an Ansible role for installing and configuring auditship, a tool that ships Linux audit logs to Fluentd endpoints. The role downloads the latest auditship binary from GitLab, configures it as an auditd plugin, and sets up log rotation.
+This is an Ansible role for installing and configuring auditship, a tool that ships Linux audit logs to Fluentd
+endpoints. The role downloads the latest auditship binary from GitLab, configures it as an auditd plugin, and sets
+up log rotation.
 
 ## Architecture
 
@@ -17,6 +19,7 @@ This is an Ansible role for installing and configuring auditship, a tool that sh
 ## Installation Workflow
 
 The role follows this sequence:
+
 1. Queries GitLab API for latest auditship release version
 2. Downloads compressed binary from GitLab packages
 3. Extracts and installs to `/usr/local/bin/auditship`
@@ -31,6 +34,7 @@ The role follows this sequence:
 ## Common Development Tasks
 
 ### Setup
+
 ```bash
 # Install dependencies
 make install
@@ -39,6 +43,7 @@ pip install -r requirements.txt
 ```
 
 ### Testing
+
 ```bash
 # Run all molecule tests (default scenario)
 make test
@@ -59,6 +64,7 @@ molecule destroy
 ```
 
 ### Linting
+
 ```bash
 # Run all linters
 make lint
@@ -70,11 +76,13 @@ markdownlint .
 ```
 
 ### Molecule Test Platforms
+
 - Ubuntu 24.04
 - Debian 11  
 - Debian 12
 
 ### Debugging Tests
+
 ```bash
 # Create and keep instances for debugging
 molecule converge

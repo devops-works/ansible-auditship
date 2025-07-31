@@ -2,7 +2,8 @@
 
 [![CI](https://github.com/devops-works/ansible-auditship/workflows/CI/badge.svg)](https://github.com/devops-works/ansible-auditship/actions?query=workflow%3ACI)
 
-An Ansible role for installing and configuring [auditship](https://gitlab.com/devopsworks/tools/auditship), a tool that ships Linux audit logs to Fluentd endpoints in real-time.
+An Ansible role for installing and configuring [auditship](https://gitlab.com/devopsworks/tools/auditship), a tool that
+ships Linux audit logs to Fluentd endpoints in real-time.
 
 ## Features
 
