@@ -17,24 +17,17 @@
       https://gitlab.com/api/v4/projects/71363433/packages/generic/auditship/{{ __auditship_latest_num_version }}/auditship-linux-amd64-{{ __auditship_latest_version }}.gz
     dest: /tmp/auditship.gz
     mode: '0644'
+  notify: 
+    - Restart auditd
 
 - name: Fetch & unarchive auditship
   # can not use unarchive, does not support gz
   ansible.builtin.shell: gunzip -cd /tmp/auditship.gz > /usr/local/bin/auditship && chmod 755 /usr/local/bin/auditship
   changed_when: true
 
-- name: Add auditd plugin config
+- name: Install logrotate template for auditship
   ansible.builtin.template:
-    # https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.plugin.conf?ref_type=heads
-    src: auditship.plugin.conf.j2
-    dest: /etc/audit/plugins.d/auditship.conf
-    owner: root
-    group: root
-    mode: '0640'
-
-- name: Add logrotate config
-  ansible.builtin.get_url:
-    url: https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.logrotate.conf?ref_type=heads
+    src: auditship.logrotate.j2
     dest: /etc/logrotate.d/auditship
     owner: root
     group: root

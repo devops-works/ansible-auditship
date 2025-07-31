@@ -45,6 +45,28 @@
       register: logrotate_config
       failed_when: not logrotate_config.stat.exists
 
+    - name: Check auditship main configuration exists
+      ansible.builtin.stat:
+        path: /etc/auditship.conf
+      register: auditship_main_config
+      failed_when: not auditship_main_config.stat.exists
+
+    - name: Verify auditship main configuration content
+      ansible.builtin.slurp:
+        src: /etc/auditship.conf
+      register: main_config_content
+
+    - name: Validate main configuration contains expected values
+      ansible.builtin.assert:
+        that:
+          - "'tag: auditd' in main_config_decoded"
+          - "'outputs:' in main_config_decoded"
+          - "'fluent://localhost:24224' in main_config_decoded"
+          - "'/var/log/auditship.json' in main_config_decoded"
+        fail_msg: "Auditship main configuration is missing required values"
+      vars:
+        main_config_decoded: "{{ main_config_content.content | b64decode }}"
+
     - name: Test auditship binary can run (version check)
       ansible.builtin.command: /usr/local/bin/auditship -version
       register: version_output

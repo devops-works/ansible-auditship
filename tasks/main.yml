@@ -7,10 +7,19 @@
 
 - name: Include auditship installation tasks
   ansible.builtin.include_tasks:
-    file: auditship.yml
+    file: install.yml
     apply:
       tags:
         - auditship
   when: __auditship is defined and (not __auditship.stat.exists or auditship_force_install)
+  tags:
+    - always
+
+- name: Configure auditship
+  ansible.builtin.include_tasks:
+    file: configure.yml
+    apply:
+      tags:
+        - auditship
   tags:
     - always

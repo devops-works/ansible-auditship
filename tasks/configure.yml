@@ -1,0 +1,29 @@
+- name: Add auditd plugin config
+  ansible.builtin.template:
+    # https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.plugin.conf?ref_type=heads
+    src: auditship.plugin.conf.j2
+    dest: /etc/audit/plugins.d/auditship.conf
+    owner: root
+    group: root
+    mode: '0640'
+  notify: 
+    - Restart auditd
+
+- name: Add auditship plugin config
+  ansible.builtin.template:
+    # https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.plugin.conf?ref_type=heads
+    src: auditship.conf.j2
+    dest: /etc/auditship.conf
+    owner: root
+    group: root
+    mode: '0640'
+  notify: 
+    - Restart auditd
+
+- name: Add logrotate config
+  ansible.builtin.get_url:
+    url: https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.logrotate.conf?ref_type=heads
+    dest: /etc/logrotate.d/auditship
+    owner: root
+    group: root
+    mode: '0644'

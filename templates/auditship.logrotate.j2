@@ -1,0 +1,11 @@
+# when used with file output, we have to rotate the log file
+/var/log/auditship.json {
+  daily
+  dateext
+  dateyesterday
+  missingok
+  rotate 5
+  compress
+  copytruncate
+  create 0640 root root
+}
