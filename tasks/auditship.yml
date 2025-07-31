@@ -14,8 +14,7 @@
 - name: Fetches latest version
   ansible.builtin.get_url:
     url: >
-      https://gitlab.com/api/v4/projects/71363433/packages/generic/auditship/
-      {{ __auditship_latest_num_version }}/auditship-linux-amd64-{{ __auditship_latest_version }}.gz
+      https://gitlab.com/api/v4/projects/71363433/packages/generic/auditship/{{ __auditship_latest_num_version }}/auditship-linux-amd64-{{ __auditship_latest_version }}.gz
     dest: /tmp/auditship.gz
     mode: '0644'
 
