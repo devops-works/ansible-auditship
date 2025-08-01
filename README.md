@@ -35,6 +35,9 @@ None. All variables have sensible defaults.
 | `auditship_outputs` | `["-", "/var/log/auditship.json"]` | Array of output destinations (stdout and file) |
 | `auditship_log_file` | `/var/log/auditship.log` | Location of auditship log file |
 | `auditship_log_level` | `info` | Logging level (debug, info, warn, error) |
+| `auditship_buffer_size` | `10000` | Buffer size for batching audit events |
+| `auditship_retry_interval` | `30` | Retry interval in seconds for failed deliveries |
+| `auditship_max_retry_attempts` | `10` | Maximum number of retry attempts |
 
 ### Example Variable Configuration
 
@@ -47,6 +50,9 @@ auditship_outputs:
   - "fluent://log-server.company.com:24224"  # fluentd endpoint
 auditship_log_file: "/var/log/auditship.log"
 auditship_log_level: "debug"
+auditship_buffer_size: 5000       # smaller buffer for high-frequency logs
+auditship_retry_interval: 60      # retry every minute
+auditship_max_retry_attempts: 5   # fail after 5 attempts
 ```
 
 ## Dependencies
@@ -76,6 +82,9 @@ None.
       - "/var/log/auditship.json"     # local file  
       - "fluent://log-server.company.com:24224"  # fluentd endpoint
     auditship_log_level: "debug"
+    auditship_buffer_size: 5000       # smaller buffer for high-frequency logs
+    auditship_retry_interval: 60      # retry every minute
+    auditship_max_retry_attempts: 5   # fail after 5 attempts
   roles:
     - devopsworks.auditship
 ```

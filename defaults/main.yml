@@ -5,3 +5,6 @@ auditship_outputs:
   - /var/log/auditship.json
 auditship_log_file: /var/log/auditship.log
 auditship_log_level: info
+auditship_buffer_size: 10000
+auditship_retry_interval: 30
+auditship_max_retry_attempts: 10
