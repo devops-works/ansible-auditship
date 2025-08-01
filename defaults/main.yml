@@ -3,3 +3,4 @@ auditship_tag: auditd
 auditship_outputs:
   - "-"
   - /var/log/auditship.json
+auditship_log_file: /var/log/auditship.log
