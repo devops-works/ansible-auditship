@@ -17,6 +17,15 @@
       https://gitlab.com/api/v4/projects/71363433/packages/generic/auditship/{{ __auditship_latest_num_version }}/auditship-linux-amd64-{{ __auditship_latest_version }}.gz
     dest: /tmp/auditship.gz
     mode: '0644'
+  register: __auditship_fetch
+  notify: 
+    - Restart auditd
+
+- name: Stop auditd so auditship can be written
+  ansible.builtin.service:
+    name: auditd
+    state: stopped
+  when: ansible_virtualization_type not in ["docker","podman"] and __auditship_fetch is changed
   notify: 
     - Restart auditd
 
@@ -24,6 +33,7 @@
   # can not use unarchive, does not support gz
   ansible.builtin.shell: gunzip -cd /tmp/auditship.gz > /usr/local/bin/auditship && chmod 755 /usr/local/bin/auditship
   changed_when: true
+  when: __auditship_fetch is changed
 
 - name: Install logrotate template for auditship
   ansible.builtin.template:
