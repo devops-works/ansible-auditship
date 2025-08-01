@@ -24,17 +24,29 @@ ships Linux audit logs to Fluentd endpoints in real-time.
 
 ### Required Variables
 
-- `auditship_fluent_url`: URL to Fluentd endpoint (default: `fluent://127.0.0.1:24224`)
+None. All variables have sensible defaults.
 
 ### Optional Variables
 
-- `auditship_force_install`: Forces reinstallation even if binary exists (default: `false`)
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `auditship_force_install` | `false` | Forces reinstallation even if binary exists |
+| `auditship_tag` | `auditd` | Tag to apply to audit logs |
+| `auditship_outputs` | `["-", "/var/log/auditship.json"]` | Array of output destinations (stdout and file) |
+| `auditship_log_file` | `/var/log/auditship.log` | Location of auditship log file |
+| `auditship_log_level` | `info` | Logging level (debug, info, warn, error) |
 
 ### Example Variable Configuration
 
 ```yaml
-auditship_fluent_url: "fluent://log-collector.example.com:24224"
 auditship_force_install: true
+auditship_tag: "security-audit"
+auditship_outputs:
+  - "-"                           # stdout
+  - "/var/log/auditship.json"     # local file
+  - "fluent://log-server.company.com:24224"  # fluentd endpoint
+auditship_log_file: "/var/log/auditship.log"
+auditship_log_level: "debug"
 ```
 
 ## Dependencies
@@ -52,13 +64,18 @@ None.
     - devopsworks.auditship
 ```
 
-### With Custom Fluentd Endpoint
+### With Custom Configuration
 
 ```yaml
 - hosts: servers
   become: true
   vars:
-    auditship_fluent_url: "fluent://log-server.company.com:24224"
+    auditship_tag: "security-audit"
+    auditship_outputs:
+      - "-"                           # stdout
+      - "/var/log/auditship.json"     # local file  
+      - "fluent://log-server.company.com:24224"  # fluentd endpoint
+    auditship_log_level: "debug"
   roles:
     - devopsworks.auditship
 ```
@@ -94,12 +111,14 @@ ansible-galaxy install git+https://github.com/devops-works/ansible-auditship.git
 2. **Binary Download**: Downloads the compressed auditship binary for Linux AMD64
 3. **Installation**: Extracts and installs the binary to `/usr/local/bin/auditship`
 4. **Plugin Configuration**: Creates auditd plugin configuration in `/etc/audit/plugins.d/auditship.conf`
-5. **Log Rotation**: Downloads and installs logrotate configuration to `/etc/logrotate.d/auditship`
+5. **Main Configuration**: Creates main auditship configuration file at `/etc/auditship.conf`
+6. **Log Rotation**: Downloads and installs logrotate configuration to `/etc/logrotate.d/auditship`
 
 ## File Locations
 
 - **Binary**: `/usr/local/bin/auditship`
 - **Plugin Config**: `/etc/audit/plugins.d/auditship.conf`
+- **Main Config**: `/etc/auditship.conf`
 - **Log Rotation**: `/etc/logrotate.d/auditship`
 
 ## Supported Platforms
@@ -174,6 +193,9 @@ ls -la /usr/local/bin/auditship
 
 # Verify plugin configuration
 cat /etc/audit/plugins.d/auditship.conf
+
+# Verify main configuration
+cat /etc/auditship.conf
 
 # Check auditd is using the plugin
 sudo service auditd status
