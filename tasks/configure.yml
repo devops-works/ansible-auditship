@@ -44,3 +44,5 @@
     - auditship_metrics_enabled | bool
     - __auditship_telegraf_dir.stat.exists
     - __auditship_telegraf_dir.stat.isdir
+  notify:
+    - Restart telegraf
