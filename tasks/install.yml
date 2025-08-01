@@ -34,11 +34,3 @@
   ansible.builtin.shell: gunzip -cd /tmp/auditship.gz > /usr/local/bin/auditship && chmod 755 /usr/local/bin/auditship
   changed_when: true
   when: __auditship_fetch is changed
-
-- name: Install logrotate template for auditship
-  ansible.builtin.template:
-    src: auditship.logrotate.j2
-    dest: /etc/logrotate.d/auditship
-    owner: root
-    group: root
-    mode: '0644'

@@ -21,8 +21,8 @@
     - Restart auditd
 
 - name: Add logrotate config
-  ansible.builtin.get_url:
-    url: https://gitlab.com/devopsworks/tools/auditship/-/raw/master/auditship.logrotate.conf?ref_type=heads
+  ansible.builtin.template:
+    url: auditship.logrotate.j2
     dest: /etc/logrotate.d/auditship
     owner: root
     group: root
