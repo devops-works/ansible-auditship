@@ -38,6 +38,10 @@ None. All variables have sensible defaults.
 | `auditship_buffer_size` | `10000` | Buffer size for batching audit events |
 | `auditship_retry_interval` | `30` | Retry interval in seconds for failed deliveries |
 | `auditship_max_retry_attempts` | `10` | Maximum number of retry attempts |
+| `auditship_metrics_enabled` | `false` | Enable metrics endpoint for monitoring |
+| `auditship_metrics_bind_address` | `127.0.0.1` | Bind address for metrics endpoint |
+| `auditship_metrics_port` | `9090` | Port for metrics endpoint |
+| `auditship_metrics_path` | `/metrics` | HTTP path for metrics endpoint |
 
 ### Example Variable Configuration
 
@@ -53,6 +57,10 @@ auditship_log_level: "debug"
 auditship_buffer_size: 5000       # smaller buffer for high-frequency logs
 auditship_retry_interval: 60      # retry every minute
 auditship_max_retry_attempts: 5   # fail after 5 attempts
+auditship_metrics_enabled: true   # enable monitoring
+auditship_metrics_bind_address: "0.0.0.0"  # expose metrics externally
+auditship_metrics_port: 8080      # custom metrics port
+auditship_metrics_path: "/stats"  # custom metrics path
 ```
 
 ## Dependencies
@@ -85,6 +93,10 @@ None.
     auditship_buffer_size: 5000       # smaller buffer for high-frequency logs
     auditship_retry_interval: 60      # retry every minute
     auditship_max_retry_attempts: 5   # fail after 5 attempts
+    auditship_metrics_enabled: true   # enable monitoring
+    auditship_metrics_bind_address: "0.0.0.0"  # expose metrics externally
+    auditship_metrics_port: 8080      # custom metrics port
+    auditship_metrics_path: "/stats"  # custom metrics path
   roles:
     - devopsworks.auditship
 ```
