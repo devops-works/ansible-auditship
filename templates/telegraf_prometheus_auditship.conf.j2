@@ -5,24 +5,6 @@
   ## An array of urls to scrape metrics from.
   urls = ["http://{{ auditship_metrics_bind_address }}:{{ auditship_metrics_port }}{{ auditship_metrics_path }}"]
 
-  ## Metric version controls the mapping from Prometheus metrics into
-  ## Telegraf metrics. When using the prometheus_client output, use the same
-  ## value in both plugins to ensure metrics are round-tripped without
-  ## modification.
-  ##
-  ##   example: metric_version = 1; deprecated in 1.13
-  ##   example: metric_version = 2; recommended version
-  # metric_version = 2
-
-  ## URL tag name (tag containing scrapped URL. optional, default is "url")
-  # url_tag = "url"
-
-  ## Specify timeout duration for slower prometheus clients (default is 3s)
-  response_timeout = "10s"
-
   ## Optional tags to add to metrics
   [inputs.prometheus.tags]
     service = "auditship"
-
-  ## Scrape interval - how often to collect metrics
-  interval = "30s"
