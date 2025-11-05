@@ -1,0 +1,11 @@
+.ansible/
+.claude/
+.git/
+.github/
+molecule/
+.gitignore
+.markdownlint.json
+.yamllint
+Makefile
+requirements.txt
+CLAUDE.md
