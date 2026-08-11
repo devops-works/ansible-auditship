@@ -25,7 +25,7 @@
   ansible.builtin.service:
     name: auditd
     state: stopped
-  when: ansible_virtualization_type not in ["docker","podman"] and __auditship_fetch is changed
+  when: ansible_facts['virtualization_type'] | default('') not in ["docker", "podman"] and __auditship_fetch is changed
   notify: 
     - Restart auditd
 

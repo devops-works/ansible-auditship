@@ -3,10 +3,10 @@
   ansible.builtin.service:
     name: auditd
     state: restarted
-  when: ansible_virtualization_type not in ["docker","podman"]
+  when: ansible_facts['virtualization_type'] | default('') not in ["docker", "podman"]
 
 - name: Restart telegraf
   ansible.builtin.service:
     name: telegraf
     state: restarted
-  when: ansible_virtualization_type not in ["docker","podman"]
+  when: ansible_facts['virtualization_type'] | default('') not in ["docker", "podman"]
